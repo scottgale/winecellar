@@ -25,6 +25,12 @@ var router = express.Router();
 // Create our Express router
 var webRouter = express.Router();
 
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
 // Initial dummy route for testing
 // http://localhost:3000/api
 router.get('/', function(req, res) {
@@ -32,6 +38,8 @@ router.get('/', function(req, res) {
   console.log(req);
   console.log(res);
 });
+
+
 
 router.route('/sensorreadings')
 
@@ -46,9 +54,9 @@ router.route('/sensorreadings')
         // save the bear and check for errors
         sensorReading.save(function(err) {
             if (err)
-                res.send(err);
-
-            res.json({ message: 'Sensor created!' });
+                handleError(res, err.message, "Failed to create new sensor reading.");
+            else
+                res.json({ message: 'Sensor created!' });
         });
     })
 
@@ -56,9 +64,9 @@ router.route('/sensorreadings')
     .get(function(req, res) {
         SensorReading.find(function(err, sensorReadings) {
             if (err)
-                res.send(err);
-
-            res.json(sensorReadings);
+                handleError(res, err.message, "Failed to get sensor readings.");
+            else
+                res.json(sensorReadings);
         });
     });    
 
