@@ -45,13 +45,17 @@ router.route('/sensorreadings')
 
     // create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res) {        
+        console.log("initiate post");
+        console.log(res);
+
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
 
         sensorReading.dateofreading = new Date();  // set the bears name (comes from the request)
         sensorReading.humidity = sanitizer.escape(req.headers.humidity);  // set the bears name (comes from the request)
         sensorReading.temp = sanitizer.escape(req.headers.temp);  // set the bears name (comes from the request)
 
-        // save the bear and check for errors
+        // save the sensor reading and check for errors
+        console.log("initiate sensor reading save");
         sensorReading.save(function(err) {
             if (err)
                 handleError(res, err.message, "Failed to create new sensor reading.");
