@@ -5,10 +5,13 @@ var app = express();
 //require path for managing file system requests
 var path = require("path");
 
+//sanitizing
+var sanitizer = require('sanitizer');
 
 //db connection 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/test'); // connect to our database
+var mongoDBConnection = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test';
+mongoose.connect(mongoDBConnection); // connect to our database
 
 //import wine cellar data model for sensors
 var SensorReading = require('./models/sensorReading');
@@ -36,9 +39,9 @@ router.route('/sensorreadings')
     .post(function(req, res) {        
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
 
-        sensorReading.dateofreading = req.sanitize(req.headers.dateofreading);  // set the bears name (comes from the request)
-        sensorReading.humidity = req.sanitize(req.headers.humidity);  // set the bears name (comes from the request)
-        sensorReading.temp = req.sanitize(req.headers.temp);  // set the bears name (comes from the request)
+        sensorReading.dateofreading = new Date();  // set the bears name (comes from the request)
+        sensorReading.humidity = sanitizer.escape(req.headers.humidity);  // set the bears name (comes from the request)
+        sensorReading.temp = sanitizer.escape(req.headers.temp);  // set the bears name (comes from the request)
 
         // save the bear and check for errors
         sensorReading.save(function(err) {

@@ -17,7 +17,8 @@
 
 		for(i=0;i<data.length;i++) {
 			var dateOfReading = new Date(data[i].dateofreading);
-			dataPoints.push(dateOfReading.getMonth()+"/"+dateOfReading.getDate());
+			console.log(dateOfReading);
+			dataPoints.push( (dateOfReading.getMonth()+1) + "/" + dateOfReading.getDate() );
 			temps.push(data[i].temp);
 			humidities.push(data[i].humidity);
 		}
