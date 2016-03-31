@@ -7,6 +7,8 @@ var SensorReadingSchema   = new Schema({
     dateofreading: { type: Date, default: Date.now },
     humidity: Number,
     temp: Number
+},{
+	collection: 'sensorreadings'
 });
 
 module.exports = mongoose.model('SensorReading', SensorReadingSchema);
