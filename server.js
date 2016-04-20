@@ -25,6 +25,12 @@ var router = express.Router();
 // Create our Express router
 var webRouter = express.Router();
 
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
 // Initial dummy route for testing
 // http://localhost:3000/api
 router.get('/', function(req, res) {
@@ -33,10 +39,15 @@ router.get('/', function(req, res) {
   console.log(res);
 });
 
+
+
 router.route('/sensorreadings')
 
     // create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res) {        
+        console.log("initiate post");
+        console.log(res);
+
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
         console.log("Humidity:" + req.body.humidity);
         console.log("Temp:" + req.body.temp);
@@ -44,12 +55,13 @@ router.route('/sensorreadings')
         sensorReading.humidity = sanitizer.escape(req.body.humidity);  // set the bears name (comes from the request)
         sensorReading.temp = sanitizer.escape(req.body.temp);  // set the bears name (comes from the request)
 
-        // save the bear and check for errors
+        // save the sensor reading and check for errors
+        console.log("initiate sensor reading save");
         sensorReading.save(function(err) {
             if (err)
-                res.send(err);
-
-            res.json({ message: 'Sensor created!' });
+                handleError(res, err.message, "Failed to create new sensor reading.");
+            else
+                res.json({ message: 'Sensor created!' });
         });
     })
 
@@ -57,9 +69,9 @@ router.route('/sensorreadings')
     .get(function(req, res) {
         SensorReading.find(function(err, sensorReadings) {
             if (err)
-                res.send(err);
-
-            res.json(sensorReadings);
+                handleError(res, err.message, "Failed to get sensor readings.");
+            else
+                res.json(sensorReadings);
         });
     });    
 
