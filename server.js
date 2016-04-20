@@ -46,7 +46,7 @@ router.route('/sensorreadings')
     // create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res) {        
         console.log("initiate post");
-        console.log(res);
+        //console.log(res);
 
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
         console.log("Humidity:" + req.body.humidity);
