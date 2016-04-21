@@ -35,19 +35,14 @@ function handleError(res, reason, message, code) {
 // http://localhost:3000/api
 router.get('/', function(req, res) {
   res.json({ message: 'You are running dangerously low on wine!' });
-  console.log(req);
-  console.log(res);
 });
 
 
 
 router.route('/sensorreadings')
 
-    // create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) {        
-        console.log("initiate post");
-        console.log(res);
-
+    // create a sensor reading (accessed at POST http://localhost:8080/api/bears)
+    .post(function(req, res) { 
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
         console.log("Humidity:" + req.body.humidity);
         console.log("Temp:" + req.body.temp);
@@ -78,15 +73,8 @@ router.route('/sensorreadings')
 // Register all our routes with /api
 app.use('/api', router);
 
-//router for web
-webRouter.route('/sensorreadings')
-    // get all the bears (accessed at GET http://localhost:8080/api/bears)
-    .get(function(req, res) {
-        res.sendFile(path.join(__dirname+'/test.html'));
-    });    
-
 // Register all our web routes with /web
-app.use('/web', webRouter)    
+app.use('/web', express.static(__dirname + '/web'));
 
 // Start the server
 app.listen(port);
