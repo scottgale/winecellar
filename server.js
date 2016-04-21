@@ -49,10 +49,11 @@ router.route('/sensorreadings')
         console.log(res);
 
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
-
+        console.log("Humidity:" + req.body.humidity);
+        console.log("Temp:" + req.body.temp);
         sensorReading.dateofreading = new Date();  // set the bears name (comes from the request)
-        sensorReading.humidity = sanitizer.escape(req.headers.humidity);  // set the bears name (comes from the request)
-        sensorReading.temp = sanitizer.escape(req.headers.temp);  // set the bears name (comes from the request)
+        sensorReading.humidity = sanitizer.escape(req.body.humidity);  // set the bears name (comes from the request)
+        sensorReading.temp = sanitizer.escape(req.body.temp);  // set the bears name (comes from the request)
 
         // save the sensor reading and check for errors
         console.log("initiate sensor reading save");
