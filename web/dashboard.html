@@ -36,13 +36,13 @@
 	}
 
 	function setChartArea() {
-		$("#myChart").width($("document").width());
-		$("#myChart").height($("document").height());
+		$("#myChart").width($(document).width()-40);
+		$("#myChart").height($(document).height()-40);
 	}
 
 	function drawChart(data) {
 		//set the chart width and height
-		setChartArea();
+		//setChartArea();
 
 		var chartData = convertData(data);
 
@@ -50,7 +50,7 @@
 		    labels: chartData.dataPoints,
 		    datasets: [
 		        {
-		            label: "My First dataset",
+		            label: "Temperature",
 		            fillColor: "rgba(220,220,220,0.2)",
 		            strokeColor: "rgba(220,220,220,1)",
 		            pointColor: "rgba(220,220,220,1)",
@@ -60,7 +60,7 @@
 		            data: chartData.temps
 		        },
 		        {
-		            label: "My Second dataset",
+		            label: "Humidity",
 		            fillColor: "rgba(151,187,205,0.2)",
 		            strokeColor: "rgba(151,187,205,1)",
 		            pointColor: "rgba(151,187,205,1)",
@@ -83,7 +83,25 @@
 		var myLineChart = new Chart(ctx).Line(data, options);
 	}
 </script>
+<style type="text/css">
+	body {
+		font:12pt Arial, Verdana, sans-serif;
+		color:gray;
+		margin:5%;
+	}
+
+	h1 {
+		text-align: center;
+	}
+
+	#myChart {
+		width:90%;
+		height:90%;
+	}
+</style>
 <body>
+	<h1>Scott Gale's Homelytics</h1>
+	<h2>Wine Cellar Temperature</h2>
 <canvas id="myChart"></canvas>
 </body>
 </html>
