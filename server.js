@@ -1,5 +1,7 @@
 // Get the packages we need
 var express = require('express');
+//body parser for parsing post responses
+var bodyParser = require('body-parser');
 // Create our Express application
 var app = express();
 //require path for managing file system requests
@@ -25,6 +27,10 @@ var router = express.Router();
 // Create our Express router
 var webRouter = express.Router();
 
+//body parser routes
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
@@ -40,15 +46,19 @@ router.get('/', function(req, res) {
 
 
 router.route('/sensorreadings')
+    // create a bear (accessed at POST http://localhost:8080/api/bears)
+    .post(function(req, res) {        
+        console.log("initiate post");
+        console.log(req.params);
+        console.log(req.query);
+        console.log(req.body);
 
-    // create a sensor reading (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) { 
         var sensorReading = new SensorReading();      // create a new instance of the Bear model
-        console.log("Humidity:" + req.body.humidity);
-        console.log("Temp:" + req.body.temp);
+        console.log("Humidity:" + req.query.humidity);
+        console.log("Temp:" + req.query.temp);
         sensorReading.dateofreading = new Date();  // set the bears name (comes from the request)
-        sensorReading.humidity = sanitizer.escape(req.body.humidity);  // set the bears name (comes from the request)
-        sensorReading.temp = sanitizer.escape(req.body.temp);  // set the bears name (comes from the request)
+        sensorReading.humidity = sanitizer.escape(req.query.humidity);  // set the bears name (comes from the request)
+        sensorReading.temp = sanitizer.escape(req.query.temp);  // set the bears name (comes from the request)
 
         // save the sensor reading and check for errors
         console.log("initiate sensor reading save");
